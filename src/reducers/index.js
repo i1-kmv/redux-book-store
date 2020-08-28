@@ -1,10 +1,14 @@
 
 const initialState = {
-  books: [],
-  loading: true,
-  error: null,
-  cartItems: [],
-  orderTotal: 220
+  bookList: {
+    books: [],
+    loading: true,
+    error: null,
+  },
+  shoppingCart: {
+    cartItems: [],
+    orderTotal: 0
+  }
 };
 
 const updateOrder = (state, bookId, quantity) => {
@@ -39,7 +43,7 @@ const updateCartItems = (cartItems, item, idx) => {
     item,
     ...cartItems.slice(idx + 1)
   ];
-};
+}
 
 const updateCartItem = (book, item = {}, quantity) => {
 
@@ -55,7 +59,39 @@ const updateCartItem = (book, item = {}, quantity) => {
     count: count + quantity,
     total: total + quantity * book.price
   };
-};
+}
+
+const updateBookList = (state, action) => {
+
+  switch (action.type) {
+    case 'FETCH_BOOKS_REQUEST':
+      return {
+
+        books: [],
+        loading: true,
+        error: null
+      };
+
+    case 'FETCH_BOOKS_SUCCESS':
+      return {
+
+        books: action.payload,
+        loading: false,
+        error: null
+      };
+
+    case 'FETCH_BOOKS_FAILURE':
+      return {
+
+        books: [],
+        loading: false,
+        error: action.payload
+      };
+  }
+
+const updateShoppingCart = (state, action) => {
+
+  }
 
 const reducer = (state = initialState, action) => {
 
@@ -95,6 +131,6 @@ const reducer = (state = initialState, action) => {
     default:
       return state;
   }
-};
+}
 
 export default reducer;
